@@ -3,6 +3,8 @@ require 'Slim/Slim.php';
 \Slim\Slim::registerAutoloader();
 
 $app = new \Slim\Slim();
+$response = $app->response();
+$response['Content-Type'] = 'application/json';
 
 // GET route
 $app->get('/', function () {
@@ -34,10 +36,10 @@ $app->post('/guardar', function () use ($app)
 	mysql_select_db($dbname) or die("No se puede abrir la db '$dbname'");
 
 	//Insertando en la base de datos
-	$test_query = "INSERT INTO $dbtable SET nombre='".$input->nombre."'";
+	$test_query = "INSERT INTO $dbtable SET nombre='$input->nombre'";
 	$resultado = mysql_query($test_query);
 
-	return $resultado;
+	echo json_encode($input);
 });
 
 $app->run();
